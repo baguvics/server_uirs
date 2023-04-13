@@ -25,6 +25,7 @@ class StudentListCreate(generics.ListCreateAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
+
 '''
 class group(APIView):
     queryset = Student.objects.all()
@@ -43,6 +44,17 @@ class group(APIView):
 
 
 '''
+
+
+def goals_to_array(request) -> []:
+    goals1, goals2 = [], []
+    for goal in request.POST:
+        if goal[:5] == 'goal1':
+            goals1.append(request.POST[goal])
+        elif goal[:5] == 'goal2':
+            goals2.append(request.POST[goal])
+    total_goals = [goals1, goals2]
+    return total_goals
 
 
 def group(request):
@@ -73,19 +85,23 @@ def indexnew(request):
     students_list = Student.objects.all()
     teachers_list = Teacher.objects.all()
     groups_list = Group.objects.all()
-    print(request.POST)
-    print(request.GET)
+
     error = ''
-    #lflflfllf
+    # lflflfllf
     if request.method == "POST":
-        print(request.GET)
+        print(request.POST)
+        total_goals = goals_to_array(request)
         teacher_name = str(request.POST["teacher_name"])
+        assistant_name = str(request.POST["consultant_name"])
         student_name = str(request.POST["student_name"])
         group_number = str(request.POST["group_number"])
-        Department.objects.all()
-        main_teacher_name = str(request.POST["main_teacher_name"])
-        generated_report = Report(student_name=student_name, teacher_name=teacher_name,
-                                  group_number=group_number, main_teacher_name=main_teacher_name)
+        title = str(request.POST["title_name"])
+        students_group = Group.objects.get(number=group_number)
+        department = Department.objects.get(name=students_group.department)
+        main_teacher_name = department.director.surname + ' ' + \
+                            department.director.name[0] + '. ' + department.director.patronymic[0] + '.'
+        generated_report = Report(student_name=student_name, teacher_name=teacher_name, total_goals=total_goals,
+                                  group_number=group_number, main_teacher_name=main_teacher_name, title=title, assistant_name=assistant_name)
         generated_report.generate_report()
 
         return redirect('/indexnew')
