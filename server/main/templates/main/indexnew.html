@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Создания документа</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="../static/tpu_ico.png" alt="" width="40" height="40">
+            </a>
+            <a href="/" class="navbar-brand">Генератор отчетов</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <div class="navbar-nav ms-5 me-auto mb-auto">
+                    <a class="nav-item nav-link active" href="{% url 'home' %}">Домой</a>
+                    <a class="nav-item nav-link" href="{% url 'about' %}">Про сайт</a>
+                    <a class="nav-item nav-link" href="{% url 'create' %}">Создать отчёт</a>
+                    <a class="nav-item nav-link" href="{% url 'indexnew' %}">TEST</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <h2></h2>
+    {% csrf_token %}
+
+    <form method="POST" action="indexnew" id="student">
+        {% csrf_token %}
+        <div class="container container-xl" style="width: 500px; alignment: left">
+            <div class="input-group m-3">
+                <input required id="group_form_name" type="text" class="matchedit form-control" placeholder="Введите номер группы"
+                    list="groups_list" name="group_number" aria-label="Text input with dropdown button" form="student"
+                onchange="">
+                <datalist id="groups_list">
+                    {% for group in groups_list %}
+                    <option value="{{ group.number }}">
+                        {% endfor %}
+                </datalist>
+
+            </div> <!--Блок с вводом номера группы-->
+            <div class="input-group m-3">
+                <input id="ajax" type="text" class="form-control" placeholder="Введите имя студента"
+                   list="json-datalist" name="student_name" aria-label="Text input with dropdown button"
+                    form="student">
+                <datalist id="json-datalist"></datalist>
+            </div> <!--Блок с вводом имени студента-->
+
+
+
+
+
+            <div class="input-group m-3">
+                <!--<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">Dropdown</button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">generated_document</a></li>
+                    <li><a class="dropdown-item" href="#">Download</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#">Separated link</a></li>
+                </ul>-->
+                <input form="student" type="text" class="form-control" placeholder="Введите имя преподавателя"
+                    list="teachers_list" name="teacher_name" aria-label="Text input with dropdown button">
+                <datalist id="teachers_list">
+                    {% for teacher in teachers_list %}
+
+                        <option value="{{ teacher.surname }} {{ teacher.name.0 }}. {{ teacher.patronymic.0 }}.">
+                        {% endfor %}
+                </datalist>
+            </div><!--Блок с вводом имени преподавателя-->
+            <div align="right">
+                <input text-align="right" placeholder="Выберите консультаната" type="checkbox" onclick="var input = document.getElementById('consultant_name'); if(this.checked){ input.hidden = false; input.focus();}else{input.hidden=true;}"/>      Есть консультант
+                <div class="input-group m-3">
+
+                    <input hidden="hidden" form="student" type="text" class="form-control" placeholder="Введите имя консультанта"
+                    list="teachers_list" name="consultant_name" id="consultant_name" aria-label="Text input with dropdown button">
+            </div>
+            </div>
+
+
+
+        </div>
+    </form>
+
+    <div>
+        <div>
+                <input type="text" name="goal1_1" form="student">
+                <button class="add">Добавить задание</button>
+                <button class="remove">Удалить</button>
+                <div id="new_chq"></div>
+                <input type="hidden" value="1" id="total_chq">
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+                    </script>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+                <script>
+                    function add() {
+                        var new_chq_no = parseInt($('#total_chq').val()) + 1;
+                        var new_input = "<input type='text' name='goal1_" + new_chq_no + "' form=\"student\" id='new_" + new_chq_no + "'>";
+
+                        $('#new_chq').append(new_input);
+
+                        $('#total_chq').val(new_chq_no);
+                    }
+
+                    function remove() {
+                        var last_chq_no = $('#total_chq').val();
+
+                        if (last_chq_no > 1) {
+                            $('#new_' + last_chq_no).remove();
+                            $('#total_chq').val(last_chq_no - 1);
+                        }
+                    }
+                    $('.add').on('click', add);
+                    $('.remove').on('click', remove);
+
+                </script>
+            </div> <!--Блок с вводом задания-->
+            <div>
+                <input type="text" name="goal2_1" form="student">
+                <button class="addn">Добавить отчетный материал</button>
+                <button class="removen">удалить</button>
+                <div id="new_chqn"></div>
+                <input type="hidden" value="1" id="total_chqn">
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+                    </script>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+                <script>
+                    function addn() {
+                        var new_chq_non = parseInt($('#total_chqn').val()) + 1;
+                        var new_inputn = "<input type='text' name='goal2_" + new_chq_non + "' form=\"student\" id='newn_" + new_chq_non + "'>";
+
+                        $('#new_chqn').append(new_inputn);
+
+                        $('#total_chqn').val(new_chq_non);
+                    }
+
+                    function removen() {
+                        var last_chq_non = $('#total_chqn').val();
+
+                        if (last_chq_non > 1) {
+                            $('#newn_' + last_chq_non).remove();
+                            $('#total_chqn').val(last_chq_non - 1);
+                        }
+                    }
+                    $('.addn').on('click', addn);
+                    $('.removen').on('click', removen);
+
+                </script>
+
+            </div> <!--Блок с вводом отчётов-->
+        <button class="btn btn-success" type="submit" form="student">SAVEALL111</button>
+        <button class="btn btn-light" type="button">
+            <a class="nav-item nav-link" href="../static/report1.docx" download="">download</a>
+        </button>
+    </div>
+    {% block content %}
+
+
+
+    <!--<form action="indexnew" method="POST">
+        {% csrf_token %}
+        {{ form.name }}<br>
+
+        <button type="submit" class="btn btn-success">Сохранить</button>
+
+        <span>{{ error }}</span>
+
+    </form>
+    {% endblock %} -->
+
+    <!-- JavaScript Bundle with Popper -->
+
+
+
+</body>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".matchedit").on('keyup', function postinput(){
+            function removeAllChildren(element) {
+             while (element.firstChild) {
+                element.removeChild(element.firstChild);
+                     }
+            }
+            var matchvalue = $(this).val(); // this.value
+            //dataList.empty();
+            var tempObj = [];
+            // Get the <datalist> and <input> elements.
+            var dataList = document.getElementById('json-datalist');
+            var input = document.getElementById('ajax');
+            if ($.trim(matchvalue).length > 3){
+                $.ajax({
+                url: '/group',
+                data: {
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    group: matchvalue,
+                },
+                type: 'post',
+                success: function (data){
+
+                    $('h2').html(data);
+
+                    $('students_list').html(data);
+                    removeAllChildren(document.getElementById('json-datalist'));
+                    console.log('stage1 ' + data.value)
+                    var jsonOptions = (data);
+                    console.log(jsonOptions);
+                    // Loop over the JSON array.
+                    jsonOptions.forEach(function(item) {
+                        // Create a new <option> element.
+                        var option = document.createElement('option');
+                        // Set the value using the item in the JSON array.
+                        if (item['fields']['patronymic'] == null)
+                            var patronymic = ''
+                        else
+                            patronymic = (item['fields']['patronymic'])[0] + '.'
+                        option.value = item['fields']['surname'] + ' ' + (item['fields']['name'])[0] + '.' + patronymic;
+                        // Add the <option> element to the <datalist>.
+
+                        dataList.appendChild(option);
+
+                        console.log(item['fields']['name'])
+                    });
+                },
+
+
+                }).done(function(responseData) {
+                    console.log('Done: ', responseData);
+                }).fail(function() {
+                    console.log('Failed');
+                });
+            }
+
+        });
+    });
+ </script>
+
+</html>

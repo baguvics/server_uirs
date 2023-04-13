@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+            crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <title>Testing Ajax</title>
+</head>
+<body>
+    <h1>Тест функций</h1>
+    <input placeholder="Выберите консультаната" type="checkbox" onclick="var input = document.getElementById('name2'); if(this.checked){ input.hidden = false; input.focus();}else{input.hidden=true;}" />Есть консультант
+<input id="name2" name="name2" hidden="hidden" />
+    <h2></h2>
+    {% csrf_token %}
+    <form id="post-form">
+        <!--<input type="text" name="group" id="group" onchange=""/>-->
+        <input name="grp1" type="text" class="matchedit" placeholder="Номер группы">
+        <div class="input-group m-3">
+               </datalist>
+
+        <input type="text" id="ajax" list="json-datalist" placeholder="Выберите студента">
+        <datalist id="json-datalist"></datalist>
+            </div> <!--Блок с вводом имени студента-->
+
+    </form>
+
+
+</body>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".matchedit").on('keyup', function postinput(){
+            function removeAllChildren(element) {
+             while (element.firstChild) {
+                element.removeChild(element.firstChild);
+                     }
+            }
+            var matchvalue = $(this).val(); // this.value
+            //dataList.empty();
+            var tempObj = [];
+            // Get the <datalist> and <input> elements.
+            var dataList = document.getElementById('json-datalist');
+            var input = document.getElementById('ajax');
+            if ($.trim(matchvalue).length > 3){
+                $.ajax({
+                url: '/group',
+                data: {
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    group: matchvalue,
+                },
+                type: 'post',
+                success: function (data){
+
+                    $('h2').html(data);
+
+                    $('students_list').html(data);
+                    removeAllChildren(document.getElementById('json-datalist'));
+                    console.log('stage1 ' + data.value)
+                    var jsonOptions = (data);
+                    console.log(jsonOptions);
+                    // Loop over the JSON array.
+                    jsonOptions.forEach(function(item) {
+                        // Create a new <option> element.
+                        var option = document.createElement('option');
+                        // Set the value using the item in the JSON array.
+                        if (item['fields']['patronymic'] == null)
+                            var patronymic = ''
+                        else
+                            patronymic = (item['fields']['patronymic'])[0] + '.'
+                        option.value = item['fields']['surname'] + ' ' + (item['fields']['name'])[0] + '.' + patronymic;
+                        // Add the <option> element to the <datalist>.
+
+                        dataList.appendChild(option);
+
+                        console.log(item['fields']['name'])
+                    });
+                },
+
+
+                }).done(function(responseData) {
+                    console.log('Done: ', responseData);
+                }).fail(function() {
+                    console.log('Failed');
+                });
+            }
+
+        });
+    });
+ </script>
+<!--<script>
+            // Get the <datalist> and <input> elements.
+            var dataList = document.getElementById('json-datalist');
+            var input = document.getElementById('ajax');
+
+            // Create a new XMLHttpRequest.
+            var request = new XMLHttpRequest();
+
+            // Handle state changes for the request.
+            request.onreadystatechange = function(response)
+            {
+                if (request.readyState === 4)
+                {
+                if (request.status === 200)
+                {
+                    // Parse the JSON
+                    var jsonOptions = JSON.parse(request.responseText);
+
+                    // Loop over the JSON array.
+                    jsonOptions.forEach(function(item) {
+                        // Create a new <option> element.
+                        var option = document.createElement('option');
+                        // Set the value using the item in the JSON array.
+
+                        option.value = item['name'] + ' ' + item['surname'] + ' ' + item['patronymic'];
+                        // Add the <option> element to the <datalist>.
+                        dataList.appendChild(option);
+                        console.log(item)
+
+                });
+        // Update the placeholder text.
+                    input.placeholder = "e.g. datalist";
+                }
+                else
+                {
+                    // An error occured :(
+                    input.placeholder = "Couldn't load datalist options :(";
+                }
+            }
+        };
+        // Update the placeholder text.
+        input.placeholder = "Loading options...";
+        // Set up and make the request.
+        request.open('GET', '/student_api', true);
+        request.send();
+
+      </script> -->
+
+</html>
