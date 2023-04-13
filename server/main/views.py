@@ -76,6 +76,7 @@ def indexnew(request):
     print(request.POST)
     print(request.GET)
     error = ''
+    #lflflfllf
     if request.method == "POST":
         print(request.GET)
         teacher_name = str(request.POST["teacher_name"])
