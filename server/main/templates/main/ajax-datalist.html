@@ -3,32 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data list</title>
+    <title>Создание отчета</title>
 </head>
 <body>
+    <div>
+        <input/><input/>
+    </div>
 
-    <div id="page-wrapper">
-        <h1>Datalist Element Show</h1>
-        <label for="default">Pick a programming language</label>
-        <input type="text" id="default" list="languages" placeholder="e.g. JavaScript">
-        <datalist id="languages">
-          <option value="HTML">
-          <option value="CSS">
-          <option value="JavaScript">
-          <option value="Java">
-          <option value="Ruby">
-          <option value="PHP">
-          <option value="Go">
-          <option value="Erlang">
-          <option value="Python">
-          <option value="C">
-          <option value="C#">
-          <option value="C++">
-        </datalist>
-        <label for="ajax">Pick an HTML Element (options loaded using AJAX)</label>
-        <input type="text" id="ajax" list="json-datalist" placeholder="e.g. datalist">
-        <datalist id="json-datalist"></datalist>
-      </div>
+
         <script>
             // Get the <datalist> and <input> elements.
             var dataList = document.getElementById('json-datalist');

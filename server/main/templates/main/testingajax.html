@@ -8,21 +8,20 @@
     <title>Testing Ajax</title>
 </head>
 <body>
-    <h1>Тест функций</h1>
-    <input placeholder="Выберите консультаната" type="checkbox" onclick="var input = document.getElementById('name2'); if(this.checked){ input.hidden = false; input.focus();}else{input.hidden=true;}" />Есть консультант
-<input id="name2" name="name2" hidden="hidden" />
+    <h1>Создание отчета</h1>
+
     <h2></h2>
     {% csrf_token %}
     <form id="post-form">
-        <!--<input type="text" name="group" id="group" onchange=""/>-->
+        <input  type="checkbox" onclick="var input = document.getElementById('name2'); if(this.checked){ input.hidden = false; input.focus();}else{input.hidden=true;}" />Есть консультант
+        <input placeholder="Выберите консультаната" id="name2" name="name2" hidden="hidden" />
         <input name="grp1" type="text" class="matchedit" placeholder="Номер группы">
-        <div class="input-group m-3">
-               </datalist>
-
-        <input type="text" id="ajax" list="json-datalist" placeholder="Выберите студента">
-        <datalist id="json-datalist"></datalist>
-            </div> <!--Блок с вводом имени студента-->
-
+        <div class="input-group m-3"></datalist>
+            <input type="text" id="ajax" list="json-datalist" placeholder="Выберите студента">
+            <datalist id="json-datalist"></datalist></br>
+            <input type="text" placeholder="Выберите преподавателя"></br>
+            <input type="text" placeholder="Введите тему">
+        </div>
     </form>
 
 

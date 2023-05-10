@@ -85,9 +85,7 @@ def indexnew(request):
     students_list = Student.objects.all()
     teachers_list = Teacher.objects.all()
     groups_list = Group.objects.all()
-
-    error = ''
-    # lflflfllf
+    error = 'Ошибка обработки'
     if request.method == "POST":
         print(request.POST)
         total_goals = goals_to_array(request)
@@ -103,7 +101,6 @@ def indexnew(request):
         generated_report = Report(student_name=student_name, teacher_name=teacher_name, total_goals=total_goals,
                                   group_number=group_number, main_teacher_name=main_teacher_name, title=title, assistant_name=assistant_name)
         generated_report.generate_report()
-
         return redirect('/indexnew')
     else:
         error = 'Форма была неверной'
@@ -114,9 +111,7 @@ def indexnew(request):
         'students_list': students_list,
         'teachers_list': teachers_list,
         'groups_list': groups_list,
-
     }
-
     return render(request, 'main/indexnew.html', context)
 
 

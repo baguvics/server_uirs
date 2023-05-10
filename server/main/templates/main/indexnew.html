@@ -13,19 +13,12 @@
             <a class="navbar-brand" href="#">
                 <img src="../static/tpu_ico.png" alt="" width="40" height="40">
             </a>
-            <a href="/" class="navbar-brand">Генератор отчетов</a>
+            <a href="/indexnew" class="navbar-brand">Генератор отчетов</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                 aria-controls="navbarContent" aria-expanded="false">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <div class="navbar-nav ms-5 me-auto mb-auto">
-                    <a class="nav-item nav-link active" href="{% url 'home' %}">Домой</a>
-                    <a class="nav-item nav-link" href="{% url 'about' %}">Про сайт</a>
-                    <a class="nav-item nav-link" href="{% url 'create' %}">Создать отчёт</a>
-                    <a class="nav-item nav-link" href="{% url 'indexnew' %}">TEST</a>
-                </div>
-            </div>
+
         </div>
     </nav>
 
@@ -34,9 +27,10 @@
 
     <form method="POST" action="indexnew" id="student">
         {% csrf_token %}
-        <div class="container container-xl" style="width: 500px; alignment: left">
-            <div class="input-group m-3">
-                <input required id="group_form_name" type="text" class="matchedit form-control" placeholder="Введите номер группы"
+        <div class="row justify-content-evenly">
+    <div class="col-4">
+        <div class=" input-group mb-2">
+                <input required id="group_form_name" type="text" class="matchedit form-control shadow-lg bg-body rounded" placeholder="Введите номер группы"
                     list="groups_list" name="group_number" aria-label="Text input with dropdown button" form="student"
                 onchange="">
                 <datalist id="groups_list">
@@ -46,24 +40,32 @@
                 </datalist>
 
             </div> <!--Блок с вводом номера группы-->
-            <div class="input-group m-3">
-                <input required id="title_name" type="text" class="form-control" placeholder="Введите тему работы"
-                     name="title_name" aria-label="Text input" form="student">
-
-
-            </div> <!--Блок с вводом номера группы-->
-            <div class="input-group m-3">
-                <input id="ajax" type="text" class="form-control" placeholder="Введите имя студента"
+        <div class="input-group mb-2">
+                <input id="ajax" type="text" class="form-control shadow-lg bg-body rounded" placeholder="Введите имя студента"
                    list="json-datalist" name="student_name" aria-label="Text input with dropdown button"
                     form="student">
                 <datalist id="json-datalist"></datalist>
             </div> <!--Блок с вводом имени студента-->
+        <div class="form-check mb-2 form-switch">
+                <input class="form-check-input" id="consultantCheck" placeholder="Выберите консультаната" type="checkbox" onclick="var input = document.getElementById('consultant_name'); if(this.checked){ input.hidden = false; input.focus();}else{input.hidden=true;}"/>
+                <label class="form-check-label" for="consultantCheck">Консультант</label>
+        </div>
+        <div class="input-group mb-2">
+
+                    <input hidden="hidden" form="student" type="text" class="form-control shadow-lg bg-body rounded" placeholder="Введите имя консультанта"
+                    list="teachers_list" name="consultant_name" id="consultant_name" >
+
+            </div><!--Блок с вводом консультанта-->
+    </div>
+    <div class="col-4">
+        <div class="input-group mb-2">
+                <input required id="title_name" type="text" class="form-control shadow-lg bg-body rounded" placeholder="Введите тему работы"
+                     name="title_name" aria-label="Text input" form="student">
+            </br>
 
 
-
-
-
-            <div class="input-group m-3">
+            </div> <!--Блок с вводом темы-->
+        <div class="input-group mb-2">
                 <!--<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">Dropdown</button>
                 <ul class="dropdown-menu">
@@ -75,7 +77,7 @@
                     </li>
                     <li><a class="dropdown-item" href="#">Separated link</a></li>
                 </ul>-->
-                <input form="student" type="text" class="form-control" placeholder="Введите имя преподавателя"
+                <input form="student" type="text" class="form-control shadow-lg bg-body rounded" placeholder="Введите имя преподавателя"
                     list="teachers_list" name="teacher_name" aria-label="Text input with dropdown button">
                 <datalist id="teachers_list">
                     {% for teacher in teachers_list %}
@@ -83,26 +85,21 @@
                         <option value="{{ teacher.surname }} {{ teacher.name.0 }}. {{ teacher.patronymic.0 }}.">
                         {% endfor %}
                 </datalist>
+            </br>
             </div><!--Блок с вводом имени преподавателя-->
-            <div align="right">
-                <input text-align="right" placeholder="Выберите консультаната" type="checkbox" onclick="var input = document.getElementById('consultant_name'); if(this.checked){ input.hidden = false; input.focus();}else{input.hidden=true;}"/>      Есть консультант
-                <div class="input-group m-3">
+    </div>
+  </div>
 
-                    <input hidden="hidden" form="student" type="text" class="form-control" placeholder="Введите имя консультанта"
-                    list="teachers_list" name="consultant_name" id="consultant_name" aria-label="Text input with dropdown button">
-            </div>
-            </div>
-
-
-
-        </div>
     </form>
-
-    <div>
+    <div class="row justify-content-evenly">
+    <div class="col-4">
+        <div class="btn-group-vertical">
+                <button class="add btn btn-outline-secondary">Добавить задание</button>
+                <button class="remove btn btn-outline-secondary">Удалить</button>
+        </div>
         <div>
-                <input type="text" name="goal1_1" form="student">
-                <button class="add">Добавить задание</button>
-                <button class="remove">Удалить</button>
+            </br>
+                <input type="text" name="goal1_1" form="student" placeholder='1. ' class="form-control">
                 <div id="new_chq"></div>
                 <input type="hidden" value="1" id="total_chq">
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -112,16 +109,12 @@
                 <script>
                     function add() {
                         var new_chq_no = parseInt($('#total_chq').val()) + 1;
-                        var new_input = "<input type='text' name='goal1_" + new_chq_no + "' form=\"student\" id='new_" + new_chq_no + "'>";
-
+                        var new_input = "<input placeholder= '" + new_chq_no + ". ' type='text' name='goal1_" + new_chq_no + "' form=\"student\" id='new_" + new_chq_no + "' class=\"form-control\">";
                         $('#new_chq').append(new_input);
-
                         $('#total_chq').val(new_chq_no);
                     }
-
                     function remove() {
                         var last_chq_no = $('#total_chq').val();
-
                         if (last_chq_no > 1) {
                             $('#new_' + last_chq_no).remove();
                             $('#total_chq').val(last_chq_no - 1);
@@ -130,12 +123,18 @@
                     $('.add').on('click', add);
                     $('.remove').on('click', remove);
 
-                </script>
+                </script></br>
             </div> <!--Блок с вводом задания-->
-            <div>
-                <input type="text" name="goal2_1" form="student">
-                <button class="addn">Добавить отчетный материал</button>
-                <button class="removen">удалить</button>
+    </div>
+    <div class="col-4">
+        <div class="btn-group-vertical">
+                    <button class="addn btn btn-outline-secondary ">Добавить отчетный материал</button>
+                    <button class="removen btn btn-outline-secondary">удалить</button>
+                </div>
+        <div>
+                </br>
+                <input placeholder="1." type="text" name="goal2_1" form="student" class="form-control">
+
                 <div id="new_chqn"></div>
                 <input type="hidden" value="1" id="total_chqn">
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -145,7 +144,7 @@
                 <script>
                     function addn() {
                         var new_chq_non = parseInt($('#total_chqn').val()) + 1;
-                        var new_inputn = "<input type='text' name='goal2_" + new_chq_non + "' form=\"student\" id='newn_" + new_chq_non + "'>";
+                        var new_inputn = "<input class=\"form-control\" placeholder= '" + new_chq_non + ". ' type='text' name='goal2_" + new_chq_non + "' form=\"student\" id='newn_" + new_chq_non + "'>";
 
                         $('#new_chqn').append(new_inputn);
 
@@ -164,13 +163,22 @@
                     $('.removen').on('click', removen);
 
                 </script>
+            </br>
 
             </div> <!--Блок с вводом отчётов-->
-        <button class="btn btn-success" type="submit" form="student">SAVEALL111</button>
+    </div>
+  </div>
+    <div class="container container-xl" style="width: 700px; alignment: left">
+
+
+<button class="btn btn-success" type="submit" form="student">Отправить отчет</button>
         <button class="btn btn-light" type="button">
-            <a class="nav-item nav-link" href="../static/report1.docx" download="">download</a>
+            <a class="nav-item nav-link" href="../static/report1.docx" download="">Скачать отчет</a>
         </button>
     </div>
+
+
+
     {% block content %}
 
 
@@ -214,12 +222,9 @@
                 },
                 type: 'post',
                 success: function (data){
-
                     $('h2').html(data);
-
                     $('students_list').html(data);
                     removeAllChildren(document.getElementById('json-datalist'));
-                    console.log('stage1 ' + data.value)
                     var jsonOptions = (data);
                     console.log(jsonOptions);
                     // Loop over the JSON array.
@@ -233,10 +238,7 @@
                             patronymic = (item['fields']['patronymic'])[0] + '.'
                         option.value = item['fields']['surname'] + ' ' + (item['fields']['name'])[0] + '.' + patronymic;
                         // Add the <option> element to the <datalist>.
-
                         dataList.appendChild(option);
-
-                        console.log(item['fields']['name'])
                     });
                 },
 
