@@ -1,0 +1,12 @@
+appscript==1.2.0
+asgiref==3.5.0
+backports.zoneinfo==0.2.1
+Django==4.0.4
+djangorestframework==3.14.0
+docx2pdf==0.1.8
+lxml==4.8.0
+Pillow==9.1.0
+python-docx==0.8.11
+pytz==2022.7.1
+sqlparse==0.4.2
+tqdm==4.64.0
